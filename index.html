@@ -53,14 +53,84 @@
       cursor: pointer;
     }
 
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
     nav a {
-      margin-left: 2rem;
       font-weight: 600;
       font-size: 1rem;
     }
 
-    main {
-      padding-top: 80px;
+    /* Hamburger Menu Styles */
+
+    #nav-toggle {
+      display: none;
+    }
+
+    #nav-toggle-label {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 25px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    #nav-toggle-label span {
+      display: block;
+      height: 3px;
+      background: #14ffec;
+      border-radius: 3px;
+      transition: 0.3s ease;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem 1.5rem;
+      }
+
+      #nav-toggle-label {
+        display: flex;
+      }
+
+      nav {
+        position: fixed;
+        top: 65px;
+        right: 0;
+        background: rgba(0,0,0,0.9);
+        height: calc(100vh - 65px);
+        width: 200px;
+        flex-direction: column;
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      nav a {
+        font-size: 1.2rem;
+      }
+
+      #nav-toggle:checked + #nav-toggle-label + nav {
+        transform: translateX(0);
+      }
+
+      /* Hamburger animation */
+      #nav-toggle:checked + #nav-toggle-label span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      #nav-toggle:checked + #nav-toggle-label span:nth-child(2) {
+        opacity: 0;
+      }
+
+      #nav-toggle:checked + #nav-toggle-label span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
     }
 
     /* Hero Section */
@@ -307,6 +377,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      width: 40%;
+      word-wrap: wrap;
     }
 
     .testimonial p {
@@ -392,12 +464,8 @@
 
     /* Responsive */
     @media screen and (max-width: 600px) {
-      header {
-        padding: 1rem 1.5rem;
-      }
       nav a {
-        margin-left: 1rem;
-        font-size: 0.9rem;
+        font-size: 1.1rem;
       }
 
       .testimonial-list {
@@ -410,11 +478,17 @@
 <body>
   <header>
     <div class="logo" tabindex="0" role="link" aria-label="Digital Marketing Agency Logo" onclick="scrollToTop()">DigiMark</div>
+    <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation menu" />
+    <label for="nav-toggle" id="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
     <nav aria-label="Primary">
-      <a href="#services" tabindex="0">Services</a>
-      <a href="#portfolio" tabindex="0">Portfolio</a>
-      <a href="#testimonials" tabindex="0">Testimonials</a>
-      <a href="#contact" tabindex="0">Contact</a>
+      <a href="#services" tabindex="0" onclick="closeMenu()">Services</a>
+      <a href="#portfolio" tabindex="0" onclick="closeMenu()">Portfolio</a>
+      <a href="#testimonials" tabindex="0" onclick="closeMenu()">Testimonials</a>
+      <a href="#contact" tabindex="0" onclick="closeMenu()">Contact</a>
     </nav>
   </header>
 
@@ -460,19 +534,19 @@
       <h2 id="portfolio-title">Our Portfolio</h2>
       <div class="portfolio-grid">
         <div class="portfolio-item" tabindex="0" role="img" aria-label="Website redesign for Tech Company">
-          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=70" alt="Tech Company Website" class="portfolio-image" />
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&amp;fit=crop&amp;w=600&amp;q=70" alt="Tech Company Website" class="portfolio-image" />
           <div class="portfolio-overlay">Tech Company Website</div>
         </div>
         <div class="portfolio-item" tabindex="0" role="img" aria-label="Social media campaign for Fashion Brand">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=70" alt="Fashion Brand Social Media" class="portfolio-image" />
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;w=600&amp;q=70" alt="Fashion Brand Social Media" class="portfolio-image" />
           <div class="portfolio-overlay">Fashion Brand Social Media</div>
         </div>
         <div class="portfolio-item" tabindex="0" role="img" aria-label="Content development for Health App">
-          <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=70" alt="Health App Content" class="portfolio-image" />
+          <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&amp;fit=crop&amp;w=600&amp;q=70" alt="Health App Content" class="portfolio-image" />
           <div class="portfolio-overlay">Health App Content</div>
         </div>
         <div class="portfolio-item" tabindex="0" role="img" aria-label="Paid ads analytics dashboard">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=70" alt="Paid Ads Analytics" class="portfolio-image" />
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&amp;fit=crop&amp;w=600&amp;q=70" alt="Paid Ads Analytics" class="portfolio-image" />
           <div class="portfolio-overlay">Paid Ads Analytics</div>
         </div>
       </div>
@@ -516,9 +590,19 @@
     // Smooth scroll to section
     function scrollToSection(id) {
       document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      closeMenu();
     }
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMenu();
+    }
+
+    // Close mobile menu on link click
+    function closeMenu() {
+      const navToggle = document.getElementById('nav-toggle');
+      if(navToggle.checked) {
+        navToggle.checked = false;
+      }
     }
 
     // Form handling and simple animation
@@ -559,27 +643,11 @@
     function confettiBurst() {
       const duration = 2 * 1000;
       const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
-
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
+      function randomColor() {
+        const colors = ['#14ffec','#00b4d8','#90e0ef','#0077b6','#023e8a'];
+        return colors[Math.floor(Math.random()*colors.length)];
       }
-
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        // Since we don't have external lib, create simple confetti squares
-        createConfettiParticles(particleCount);
-      }, 250);
-    }
-
-    function createConfettiParticles(count) {
-      for(let i=0; i<count; i++) {
+      function createParticle() {
         const confetti = document.createElement('div');
         confetti.style.position = 'fixed';
         confetti.style.width = '8px';
@@ -592,27 +660,27 @@
         confetti.style.borderRadius = '2px';
         confetti.style.pointerEvents = 'none';
         confetti.style.transition = 'transform 1.5s ease-out, opacity 1.5s ease-out';
-
         document.body.appendChild(confetti);
-
         requestAnimationFrame(() => {
           const xMovement = (Math.random() - 0.5) * 300;
           const yMovement = -window.innerHeight - 100;
           confetti.style.transform = `translate(${xMovement}px, ${yMovement}px) rotate(${Math.random()*360}deg)`;
           confetti.style.opacity = 0;
         });
-
-        setTimeout(() => {
-          confetti.remove();
-        }, 1500);
+        setTimeout(() => confetti.remove(), 1500);
       }
-    }
-
-    function randomColor() {
-      const colors = ['#14ffec','#00b4d8','#90e0ef','#0077b6','#023e8a'];
-      return colors[Math.floor(Math.random()*colors.length)];
+      const interval = setInterval(() => {
+        if (Date.now() > animationEnd) {
+          clearInterval(interval);
+          return;
+        }
+        for(let i=0; i<15; i++) {
+          createParticle();
+        }
+      }, 200);
     }
   </script>
 </body>
 </html>
 
+  
